@@ -44,6 +44,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Cache.cs" />
+    <Compile Include="TaskAsyncHelper.cs" />
     <Compile Include="Emailer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
