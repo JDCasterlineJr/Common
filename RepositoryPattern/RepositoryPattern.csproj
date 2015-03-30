@@ -7,8 +7,8 @@
     <ProjectGuid>{C87BC080-4FC7-4867-9691-90FF7AA8E527}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Repository</RootNamespace>
-    <AssemblyName>Repository</AssemblyName>
+    <RootNamespace>RepositoryPattern</RootNamespace>
+    <AssemblyName>RepositoryPattern</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
