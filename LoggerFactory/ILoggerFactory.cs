@@ -1,4 +1,4 @@
-namespace Common.LoggerFactory
+namespace LoggerFactory
 {
     /// <summary>
     /// Represents a logger factory used to create an instance of an <see cref="ILogger"/>.

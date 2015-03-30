@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 
-namespace Common.DatabaseFactory
+namespace DatabaseFactory
 {
     /// <summary>
     /// Represents a custom database factory section within the application configuration file.

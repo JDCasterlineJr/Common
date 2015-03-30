@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 
-namespace Common.DatabaseFactory.Databases
+namespace DatabaseFactory.Databases
 {
     /// <summary>
     /// An implementation of the <see cref="Database"/> class used to communicate with Sql Server.

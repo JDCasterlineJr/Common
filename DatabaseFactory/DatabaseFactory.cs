@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Configuration;
+using Common.DatabaseFactory;
 
-namespace Common.DatabaseFactory
+namespace DatabaseFactory
 {
     /// <summary>
     /// An implementation of <see cref="IDatabaseFactory"/> that uses reflection to create an instance of an <see cref="IDatabase"/>.

@@ -1,4 +1,6 @@
-﻿namespace Common.DatabaseFactory
+﻿using Common.DatabaseFactory;
+
+namespace DatabaseFactory
 {
     /// <summary>
     /// Represents a database factory used to create an instance of an <see cref="IDatabase"/>.

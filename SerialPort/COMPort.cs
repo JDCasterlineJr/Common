@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Common.SerialPort
+namespace SerialPort
 {
     public delegate void PortErrorEventHander(Exception ex);
 

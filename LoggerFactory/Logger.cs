@@ -1,4 +1,4 @@
-﻿namespace Common.LoggerFactory
+﻿namespace LoggerFactory
 {
     /// <summary>
     ///An abstract implementation of an <see cref="ILogger"/>.

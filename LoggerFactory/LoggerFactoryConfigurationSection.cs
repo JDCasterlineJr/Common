@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace Common.LoggerFactory
+namespace LoggerFactory
 {
     /// <summary>
     /// Represents a custom database factory section within the application configuration file.

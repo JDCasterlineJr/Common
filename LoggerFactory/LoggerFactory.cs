@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Runtime.CompilerServices;
 
-namespace Common.LoggerFactory
+namespace LoggerFactory
 {
     /// <summary>
     /// An implementation of <see cref="ILoggerFactory"/> that uses reflection to create an instance of an <see cref="ILogger"/>.

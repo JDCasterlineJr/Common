@@ -1,4 +1,4 @@
-﻿namespace Common.LoggerFactory
+﻿namespace LoggerFactory
 {
     public enum LogLevel
     {

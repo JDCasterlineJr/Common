@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Common.Repository
+namespace Repository
 {
     /// <summary>
     /// Represents a repository for interacting with a database instance.

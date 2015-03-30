@@ -2,7 +2,7 @@
 using System.IO.Ports;
 using System.Threading;
 
-namespace Common.SerialPort
+namespace SerialPort
 {
     public class AutoPort
     {

@@ -1,4 +1,4 @@
-﻿namespace Common.Repository
+﻿namespace Repository
 {
     /// <summary>
     /// Represents an entity in the database.

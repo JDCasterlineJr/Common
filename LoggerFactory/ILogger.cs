@@ -1,4 +1,4 @@
-﻿namespace Common.LoggerFactory
+﻿namespace LoggerFactory
 {
     /// <summary>
     ///Represents a logger used to log messages.

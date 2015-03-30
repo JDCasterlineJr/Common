@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.LoggerFactory
+namespace LoggerFactory
 {
     /// <summary>
     /// Log data that can be used by any <see cref="ILogger"/>
