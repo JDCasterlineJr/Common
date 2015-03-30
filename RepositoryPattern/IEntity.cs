@@ -1,4 +1,4 @@
-﻿namespace Repository
+﻿namespace RepositoryPattern
 {
     /// <summary>
     /// Represents an entity in the database.
