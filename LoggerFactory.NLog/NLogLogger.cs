@@ -1,8 +1,6 @@
 ﻿using NLog;
-using Logger = LoggerFactory.Logger;
-using LogLevel = LoggerFactory.LogLevel;
 
-namespace LoggerFactory.Loggers
+namespace LoggerFactory.NLogLogger
 {
     /// <summary>
     /// An implementation of the <see cref="Logger"/> class that uses NLog for logging.

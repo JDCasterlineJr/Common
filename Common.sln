@@ -24,6 +24,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sockets", "Sockets\Sockets.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryPattern", "RepositoryPattern\RepositoryPattern.csproj", "{C87BC080-4FC7-4867-9691-90FF7AA8E527}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseFactory.SqlServer", "DatabaseFactory.SqlServer\DatabaseFactory.SqlServer.csproj", "{07D1A2D3-5990-4878-895E-0679F64970E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseFactory.SQLite", "DatabaseFactory.SQLite\DatabaseFactory.SQLite.csproj", "{01E73282-73E3-4A2A-8E53-AF1CB289FA78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerFactory.NLogLogger", "LoggerFactory.NLog\LoggerFactory.NLogLogger.csproj", "{53F64767-32E4-4A76-8CBF-261E1CD14E51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +68,18 @@ Global
 		{C87BC080-4FC7-4867-9691-90FF7AA8E527}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C87BC080-4FC7-4867-9691-90FF7AA8E527}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C87BC080-4FC7-4867-9691-90FF7AA8E527}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07D1A2D3-5990-4878-895E-0679F64970E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07D1A2D3-5990-4878-895E-0679F64970E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07D1A2D3-5990-4878-895E-0679F64970E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07D1A2D3-5990-4878-895E-0679F64970E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01E73282-73E3-4A2A-8E53-AF1CB289FA78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01E73282-73E3-4A2A-8E53-AF1CB289FA78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01E73282-73E3-4A2A-8E53-AF1CB289FA78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01E73282-73E3-4A2A-8E53-AF1CB289FA78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53F64767-32E4-4A76-8CBF-261E1CD14E51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53F64767-32E4-4A76-8CBF-261E1CD14E51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53F64767-32E4-4A76-8CBF-261E1CD14E51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53F64767-32E4-4A76-8CBF-261E1CD14E51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,8 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DatabaseFactory</RootNamespace>
     <AssemblyName>DatabaseFactory</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>76d4a76c</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,7 +47,6 @@
     </Compile>
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseFactoryConfigurationSection.cs" />
-    <Compile Include="Databases\SqlServerDatabase.cs" />
     <Compile Include="DatabaseFactory.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="IDatabaseFactory.cs" />

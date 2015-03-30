@@ -1,38 +1,39 @@
-﻿using System.Data;
-using System.Data.SqlClient;
+﻿using System;
+using System.Data;
+using System.Data.SQLite;
 
-namespace DatabaseFactory.Databases
+namespace DatabaseFactory.SQLite
 {
     /// <summary>
     /// An implementation of the <see cref="Database"/> class used to communicate with Sql Server.
     /// </summary>
-    public class SqlServerDatabase : Database
+    public class SQLiteDatabase : Database
     {
         /// <summary>
-        /// Create an SqlConnection to the data source.
+        /// Create an SQLiteConnection to the data source.
         /// </summary>
         /// <returns>Returns an IDbConnection created using ConnectionString.</returns>
         public override IDbConnection CreateConnection()
         {
-            return new SqlConnection(ConnectionString);
+            return new SQLiteConnection(ConnectionString);
         }
 
         /// <summary>
-        /// Creates an SqlCommand that is executed while connected to the data source.
+        /// Creates an SQLiteCommand that is executed while connected to the data source.
         /// </summary>
         /// <returns>Returns an IDbCommand.</returns>
         public override IDbCommand CreateCommand()
         {
-            return new SqlCommand();
+            return new SQLiteCommand();
         }
 
         /// <summary>
-        /// Create an SqlConnection to the data source and open that connection.
+        /// Create an SQLiteConnection to the data source and open that connection.
         /// </summary>
         /// <returns>Returns an open IDbConnection created using ConnectionString.</returns>
         public override IDbConnection CreateOpenConnection()
         {
-            var connection = (SqlConnection)CreateConnection();
+            var connection = (SQLiteConnection)CreateConnection();
 
             connection.Open();
 
@@ -40,48 +41,39 @@ namespace DatabaseFactory.Databases
         }
 
         /// <summary>
-        /// Creates an SqlCommand using the specified parameters and sets the command type to CommandType.Text.
+        /// Creates an SQLiteCommand using the specified parameters and sets the command type to CommandType.Text.
         /// </summary>
         /// <param name="commandText">The Transact-SQL statement to execute at the data source.</param>
         /// <param name="connection">The IDbConnection used by this instance of the IDbCommand.</param>
         /// <returns>Returns an IDbCommand.</returns>
         public override IDbCommand CreateCommand(string commandText, IDbConnection connection)
         {
-            var command = (SqlCommand)CreateCommand();
+            var command = (SQLiteCommand)CreateCommand();
 
             command.CommandText = commandText;
-            command.Connection = connection as SqlConnection;
+            command.Connection = connection as SQLiteConnection;
             command.CommandType = CommandType.Text;
 
             return command;
         }
 
         /// <summary>
-        /// Creates an SqlCommand using the specified parameters and sets the command type to CommandTYpe.StoredProcedure.
+        /// SQLite does not support stored procedures.
         /// </summary>
-        /// <param name="procName">The stored procedure to execute at the data source.</param>
-        /// <param name="connection">The IDbConnection used by this instance of the IDbCommand.</param>
-        /// <returns>Returns an IDbCommand.</returns>
         public override IDbCommand CreateStoredProcCommand(string procName, IDbConnection connection)
-        {
-            var command = (SqlCommand)CreateCommand();
-
-            command.CommandText = procName;
-            command.Connection = connection as SqlConnection;
-            command.CommandType = CommandType.StoredProcedure;
-
-            return command;
+        { 
+            throw new NotSupportedException("SQLite does not support stored procedures.");
         }
 
         /// <summary>
-        /// Creates an SqlParameter using the specified parameters.
+        /// Creates an SQLiteParameter using the specified parameters.
         /// </summary>
         /// <param name="parameterName">The name of the parameter to map.</param>
         /// <param name="parameterValue">An Object that is the value of the IDataParameter.</param>
         /// <returns>Returns an IDataParameter.</returns>
         public override IDataParameter CreateParameter(string parameterName, object parameterValue)
         {
-            return new SqlParameter(parameterName, parameterValue);
+            return new SQLiteParameter(parameterName, parameterValue);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿#Settings to go in the app.config
 <configSections>
-<section name="DatabaseFactoryConfiguration" type="Common.DatabaseFactory.DatabaseFactoryConfigurationSection, DatabaseFactory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+<section name="DatabaseFactoryConfiguration" type="DatabaseFactory.DatabaseFactoryConfigurationSection, DatabaseFactory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
 </configSections>
 
 <connectionStrings>
@@ -9,9 +9,9 @@
 </connectionStrings>
 
 //Namespace qualified name  
-<DatabaseFactoryConfiguration Name="Common.DatabaseFactory.Databases.SqlServerDatabase" ConnectionStringName="DefaultConnectionString" />
+<DatabaseFactoryConfiguration Name="DatabaseFactory.Databases.SqlServerDatabase" ConnectionStringName="DefaultConnectionString" />
 //Assembly qualified name
-<DatabaseFactoryConfiguration Name="Common.DatabaseFactory.Databases.SqlServerDatabase, Common.DatabaseFactory" ConnectionStringName="DefaultConnectionString" />
+<DatabaseFactoryConfiguration Name="DatabaseFactory.Databases.SqlServerDatabase, DatabaseFactory" ConnectionStringName="DefaultConnectionString" />
 #Settings to go in the app.config
 
 DatabaseFactoryConfiguration.Name = qualified name of the concrete implementation DatabaseFactory.Database to use

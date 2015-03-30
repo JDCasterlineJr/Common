@@ -1,12 +1,12 @@
 ﻿#Settings to go in the app.config
 <configSections>
-<section name="LoggerFactoryConfiguration" type="Common.LoggerFactory.LoggerFactoryConfigurationSection, DatabaseFactory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+<section name="LoggerFactoryConfiguration" type="LoggerFactory.LoggerFactoryConfigurationSection, LoggerFactory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
 </configSections>
 
 //Namespace qualified name  
-<LoggerFactoryConfiguration Name="Common.LoggerFactory.Loggers.NLogLogger" />
+<LoggerFactoryConfiguration Name="LoggerFactory.Loggers.NLogLogger" />
 //Assembly qualified name
-<LoggerFactoryConfiguration Name="Common.LoggerFactory.Loggers.NLogLogger, Common.LoggerFactory" />
+<LoggerFactoryConfiguration Name="LoggerFactory.Loggers.NLogLogger, LoggerFactory" />
 #Settings to go in the app.config
 
 LoggerFactoryConfiguration.Name = qualified name of the concrete implementation LoggerFactory.Logger to use
