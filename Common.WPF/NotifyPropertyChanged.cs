@@ -20,15 +20,17 @@ namespace Common.WPF
         /// <param name="storage">Variable storing the value.</param>
         /// <param name="value">Value to store.</param>
         /// <param name="propertyName">(Optional) Name of the property that has changed.</param>
-        protected virtual void ChangeAndNotify<T>(ref T storage, T value,
+        /// <returns>True if the value was changed and clients were notified.</returns>
+        protected virtual bool ChangeAndNotify<T>(ref T storage, T value,
             [CallerMemberName] string propertyName = null)
         {
-            if (EqualityComparer<T>.Default.Equals(storage, value)) return;
+            if (EqualityComparer<T>.Default.Equals(storage, value)) return false;
 
             storage = value;
 
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            return true;
         }
     }
 
