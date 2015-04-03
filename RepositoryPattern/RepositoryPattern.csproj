@@ -43,8 +43,10 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="IReadFrom.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IEntity.cs" />
+    <Compile Include="IWriteTo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
