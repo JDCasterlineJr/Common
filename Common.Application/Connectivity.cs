@@ -7,12 +7,6 @@ using System.Runtime.InteropServices;
 namespace Common.Application
 {
     /// <summary>
-    /// Delegate that will return messages about the connectivity check process.
-    /// </summary>
-    /// <param name="message">Details about process.</param>
-    public delegate void ConnectivityMessageHander(string message);
-
-    /// <summary>
     /// A class used to verify an internet connection.
     /// </summary>
     public class Connectivity
@@ -20,7 +14,13 @@ namespace Common.Application
         /// <summary>
         /// Event that will return messages about the connectivity check process and any errors that occur.
         /// </summary>
-        public static event ConnectivityMessageHander ConnectivityMessage;
+        public event Action<string> ConnectivityMessage;
+
+        private void OnConnectivityMessage(string obj)
+        {
+            var handler = ConnectivityMessage;
+            if (handler != null) handler(obj);
+        }
 
         /// <summary>
         /// Retrieves the connected state of the local system.
@@ -35,7 +35,7 @@ namespace Common.Application
         /// A method that wraps the InternetGetConnectedState api call.
         /// </summary>
         /// <returns>True if an active network connection is found.</returns>
-        public static bool CanConnectToNetwork()
+        public bool CanConnectToNetwork()
         {
             int flag;
             return InternetGetConnectedState(out flag, 0);
@@ -46,7 +46,7 @@ namespace Common.Application
         /// </summary>
         /// <param name="hostNameOrAddress">Host name or ip address to ping.</param>
         /// <returns>True if the host or address specified can be pinged successfully.</returns>
-        public static bool CanConnectToHost(string hostNameOrAddress)
+        public bool CanConnectToHost(string hostNameOrAddress)
         {
             try
             {
@@ -78,15 +78,13 @@ namespace Common.Application
                     }
                     else
                     {
-                        if (ConnectivityMessage != null)
-                            ConnectivityMessage(string.Format("Could not reach address: {0} - Status: {1}",
+                            OnConnectivityMessage(string.Format("Could not reach address: {0} - Status: {1}",
                                 reply.Address,
                                 reply.Status));
                     }
                 else
                 {
-                    if (ConnectivityMessage != null)
-                        ConnectivityMessage("Could not reach host " + hostNameOrAddress);
+                        OnConnectivityMessage("Could not reach host " + hostNameOrAddress);
                 }
             }
             catch (Exception)
@@ -101,19 +99,19 @@ namespace Common.Application
         /// </summary>
         /// <param name="hostNameOrAddress">A String that identifies the host computer. The value specified for this parameter can be a host name or a string representation of an IP address.</param>
         /// <returns>True if connection to host can be made.</returns>
-        public static bool HasConnectivity(string hostNameOrAddress = null)
+        public bool HasConnectivity(string hostNameOrAddress = null)
         {
-            if (ConnectivityMessage != null) ConnectivityMessage("Start connectivity check");
+            OnConnectivityMessage("Start connectivity check");
 
             if (CanConnectToNetwork())
             {
-                if (ConnectivityMessage != null) ConnectivityMessage("Network available");
+                OnConnectivityMessage("Network available");
 
                 return String.IsNullOrWhiteSpace(hostNameOrAddress) || CanConnectToHost(hostNameOrAddress);
             }
             else
             {
-                if (ConnectivityMessage != null) ConnectivityMessage("Network not avaiable");
+                OnConnectivityMessage("Network not avaiable");
             }
             return false;
         }

@@ -7,10 +7,6 @@ using System.Threading.Tasks;
 
 namespace SerialPort
 {
-    public delegate void PortErrorEventHander(Exception ex);
-
-    public delegate void PortConnectedEventHandler(string portName);
-
     /// <summary>
     /// Wrapper around <see cref="System.IO.Ports.SerialPort"/>.
     /// </summary>
@@ -27,11 +23,25 @@ namespace SerialPort
         /// <summary>
         /// Represents the method that will handle the port error event of a <see cref="COMPort"/> object.
         /// </summary>
-        public event PortErrorEventHander PortError;
+        public event Action<Exception> PortError;
+
+        private void OnPortError(Exception ex)
+        {
+            var handler = PortError;
+            if (handler != null) handler(ex);
+            
+        }
+
         /// <summary>
         /// Represents the method that will handle the port connected event of a <see cref="COMPort"/> object.
         /// </summary>
-        public event PortConnectedEventHandler PortConnected;
+        public event Action<string> PortConnected;
+
+        private void OnPortConnected(string port)
+        {
+            var handler = PortConnected;
+            if (handler != null) handler(port);
+        }
 
         /// <summary>
         /// Open a COMPort and 
@@ -50,8 +60,7 @@ namespace SerialPort
             var portExists = System.IO.Ports.SerialPort.GetPortNames().Any(x => x == portName);
             if (!portExists)
             {
-                if (PortError != null)
-                    PortError(new Exception(string.Format("COM port {0} does not exist.", portName)));
+                OnPortError(new Exception(string.Format("COM port {0} does not exist.", portName)));
                 return;
             }
 
@@ -65,7 +74,7 @@ namespace SerialPort
         public void Dispose()
         {
             if (_disposed)
-                throw new ObjectDisposedException(GetType().Name, "Cannot use a disposed object.");
+                return;
 
             StopCommunications();
 
@@ -75,12 +84,13 @@ namespace SerialPort
             _port.Dispose();
             _disconnectTimer.Dispose();
 
+            
             _disposed = true;
         }
 
         private void _port_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
-            if (PortError != null) PortError(new Exception(e.EventType.ToString()));
+            OnPortError(new Exception(e.EventType.ToString()));
         }
 
         private void _port_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -94,7 +104,7 @@ namespace SerialPort
             }
             catch (Exception ex)
             {
-                if (PortError != null) PortError(ex);
+                OnPortError(ex);
                 return;
             }
 
@@ -127,7 +137,7 @@ namespace SerialPort
             }
             catch (Exception ex)
             {
-                if (PortError != null) PortError(ex);
+                OnPortError(ex);
             }
         }
 
@@ -146,7 +156,7 @@ namespace SerialPort
             }
             catch (Exception ex)
             {
-                if (PortError != null) PortError(ex);
+                OnPortError(ex);
             }
         }
 
@@ -165,11 +175,11 @@ namespace SerialPort
 
                 _port.Open();
 
-                if (PortConnected != null) PortConnected(_port.PortName);
+                OnPortConnected(_port.PortName);
             }
             catch (Exception ex)
             {
-                if (PortError != null) PortError(ex);
+                OnPortError(ex);
                 return;
             }
 
@@ -199,7 +209,7 @@ namespace SerialPort
             }
             catch (Exception ex)
             {
-                if (PortError != null) PortError(ex);
+                OnPortError(ex);
             }
 
             ReceivedData = new BlockingCollection<byte>();
@@ -223,13 +233,13 @@ namespace SerialPort
                     }
                     catch (Exception ex)
                     {
-                        if (PortError != null) PortError(ex);
+                        OnPortError(ex);
                     }
                 }, _ctsPortQueueMonitor.Token);
             }
             catch (Exception ex)
             {
-                if (PortError != null) PortError(ex);
+                OnPortError(ex);
             }
         }
 
