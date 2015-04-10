@@ -95,7 +95,7 @@ namespace Common.Application
         }
 
         /// <summary>
-        /// Wrapper for CanConnectoToNetwork and CanConnectToHost
+        /// Wrapper for CanConnectToNetwork and CanConnectToHost
         /// </summary>
         /// <param name="hostNameOrAddress">A String that identifies the host computer. The value specified for this parameter can be a host name or a string representation of an IP address.</param>
         /// <returns>True if connection to host can be made.</returns>
