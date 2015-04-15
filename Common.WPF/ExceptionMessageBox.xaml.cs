@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -14,12 +13,12 @@ namespace Common.WPF
     /// <summary>
     /// Interaction logic for ExceptionMessageBox.xaml
     /// </summary>
-    public partial class ExceptionMessageBox : Window, INotifyPropertyChanged
+    public partial class ExceptionMessageBox : INotifyPropertyChanged
     {
         private string _message = string.Empty;
         private List<string> _additionalMessages = new List<string>();
         private Visibility _additionalInfoVisible = Visibility.Collapsed;
-        private BitmapSource _errorImage = null;
+        private BitmapSource _errorImage;
 
         public Exception Exception { get; set; }
 
@@ -47,19 +46,14 @@ namespace Common.WPF
             set { ChangeAndNotify(ref _errorImage, value); }
         }
 
-        public ExceptionMessageBox(Exception ex, string message, string title)
+        public ExceptionMessageBox(Exception ex, string title, string message=null)
         {
             InitializeComponent();
             DataContext = this;
 
             Exception = ex;
-            Title = title;
-            Message = message;
-
-            if (String.IsNullOrWhiteSpace(Message))
-                Message = ex.Message;
-            if (String.IsNullOrWhiteSpace(Title))
-                Title = Exception.Source;
+            Message = String.IsNullOrWhiteSpace(message) ? ex.Message : message;
+            Title = String.IsNullOrWhiteSpace(title) ? Exception.Source : title;
 
             if(String.IsNullOrWhiteSpace(message))
                 AdditionalMessages = GetAdditionalMessages();
