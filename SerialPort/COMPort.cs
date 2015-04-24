@@ -10,18 +10,16 @@ namespace SerialPort
     /// <summary>
     /// Wrapper around <see cref="System.IO.Ports.SerialPort"/>.
     /// </summary>
-    public class COMPort : IDisposable
+    public class ComPort : IDisposable
     {
-        public DateTime LastDataReceived { get; private set; }
         private readonly System.IO.Ports.SerialPort _port;
         private readonly Action<byte> _processReceivedByte;
         private CancellationTokenSource _ctsPortQueueMonitor;
-        private BlockingCollection<byte> _receivedDataQueue = new BlockingCollection<byte>();
-        private Timer _disconnectTimer;
+
         private bool _disposed;
-        
+
         /// <summary>
-        /// Represents the method that will handle the port error event of a <see cref="COMPort"/> object.
+        /// Represents the method that will handle the port error event of a <see cref="ComPort"/> object.
         /// </summary>
         public event Action<Exception> PortError;
 
@@ -29,11 +27,10 @@ namespace SerialPort
         {
             var handler = PortError;
             if (handler != null) handler(ex);
-            
         }
 
         /// <summary>
-        /// Represents the method that will handle the port connected event of a <see cref="COMPort"/> object.
+        /// Represents the method that will handle the port connected event of a <see cref="ComPort"/> object.
         /// </summary>
         public event Action<string> PortConnected;
 
@@ -44,17 +41,18 @@ namespace SerialPort
         }
 
         /// <summary>
-        /// Open a COMPort and 
+        /// Create an instance of the ComPort.
         /// </summary>
-        /// <param name="portName">Sets the serial baud rate.</param>
-        /// <param name="baudRate"></param>
+        /// <param name="portName">The name of the serial port to connect to.</param>
+        /// <param name="baudRate">Sets the serial baud rate.</param>
         /// <param name="parity">Sets the parity-checking protocol.</param>
         /// <param name="dataBits">Sets the standard length of data bits per byte.</param>
         /// <param name="stopBits">Sets the standard number of stopbits per byte.</param>
         /// <param name="processReceivedByte">Action that will process the received byte queue. If this action is not specified, the ReceivedData collection must be processed.</param>
-        public COMPort(string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits,
+        public ComPort(string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits,
             Action<byte> processReceivedByte = null)
         {
+            ReceivedData = new BlockingCollection<byte>();
             LastDataReceived = DateTime.MinValue;
 
             var portExists = System.IO.Ports.SerialPort.GetPortNames().Any(x => x == portName);
@@ -78,13 +76,11 @@ namespace SerialPort
 
             StopCommunications();
 
-            if(_ctsPortQueueMonitor!=null)
+            if (_ctsPortQueueMonitor != null)
                 _ctsPortQueueMonitor.Dispose();
 
             _port.Dispose();
-            _disconnectTimer.Dispose();
 
-            
             _disposed = true;
         }
 
@@ -108,18 +104,7 @@ namespace SerialPort
                 return;
             }
 
-            buffer.ToList().ForEach(b => _receivedDataQueue.Add(b));
-        }
-
-        private void _disconnectTimer_Tick(object state)
-        {
-            if (LastDataReceived < DateTime.Now.AddMinutes(-1))
-            {
-                //port is idle, maybe disconnected
-                //try reconnecting to port
-                StopCommunications();
-                StartCommunications();
-            }
+            buffer.ToList().ForEach(b => ReceivedData.Add(b));
         }
 
         /// <summary>
@@ -149,7 +134,7 @@ namespace SerialPort
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name, "Cannot use a disposed object.");
-            
+
             try
             {
                 _port.Write(bytes, 0, bytes.Length);
@@ -167,7 +152,7 @@ namespace SerialPort
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name, "Cannot use a disposed object.");
-            
+
             try
             {
                 if (_port.IsOpen)
@@ -185,8 +170,6 @@ namespace SerialPort
 
             if (_processReceivedByte != null)
                 StartCollectionMonitor();
-
-            _disconnectTimer = new Timer(_disconnectTimer_Tick, null, new TimeSpan(0, 0, 1, 0), new TimeSpan(0, 0, 1, 0));
         }
 
         /// <summary>
@@ -196,11 +179,9 @@ namespace SerialPort
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name, "Cannot use a disposed object.");
-            
+
             if (_ctsPortQueueMonitor != null)
                 _ctsPortQueueMonitor.Cancel();
-
-            _disconnectTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
 
             try
             {
@@ -223,17 +204,21 @@ namespace SerialPort
 
                 Task.Factory.StartNew(delegate
                 {
-                    try
+                    while (null != _ctsPortQueueMonitor && !_ctsPortQueueMonitor.Token.IsCancellationRequested)
                     {
-                        while (null != _ctsPortQueueMonitor && !_ctsPortQueueMonitor.Token.IsCancellationRequested)
+                        try
                         {
-                            var item = _receivedDataQueue.Take(_ctsPortQueueMonitor.Token);
+                            var item = ReceivedData.Take(_ctsPortQueueMonitor.Token);
                             _processReceivedByte(item);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        OnPortError(ex);
+                        catch (OperationCanceledException)
+                        {
+                            //Ignore. Blocking collection throws this error when the operation is cancelled.
+                        }
+                        catch (Exception ex)
+                        {
+                            OnPortError(ex);
+                        }
                     }
                 }, _ctsPortQueueMonitor.Token);
             }
@@ -244,15 +229,12 @@ namespace SerialPort
         }
 
         #region Properties
+        public DateTime LastDataReceived { get; private set; }
 
         /// <summary>
-        /// The collection holding data received on the serial port. This must be 
+        /// The collection holding data received on the serial port. This must be consumed if no ProcessReceivedByte action is set.
         /// </summary>
-        public BlockingCollection<byte> ReceivedData
-        {
-            get { return _receivedDataQueue; }
-            set { _receivedDataQueue = value; }
-        }
+        public BlockingCollection<byte> ReceivedData { get; set; }
 
         #endregion
     }

@@ -4,9 +4,9 @@ using System.Threading;
 
 namespace SerialPort
 {
-    public class AutoPort
+    class AutoPort
     {
-        private COMPort _port;
+        private ComPort _port;
 
         /// <summary>
         /// 
@@ -24,7 +24,7 @@ namespace SerialPort
             var portNames = System.IO.Ports.SerialPort.GetPortNames();
             foreach (var portName in portNames)
             {
-                using (var port = new COMPort(portName, baudRate, parity, dataBits, stopBits))
+                using (var port = new ComPort(portName, baudRate, parity, dataBits, stopBits))
                 {
                     try
                     {
@@ -49,8 +49,7 @@ namespace SerialPort
 
             if (!String.IsNullOrWhiteSpace(foundPortName))
             {
-                _port = new COMPort(foundPortName, baudRate, parity, dataBits, stopBits);
-                _port.PortError+=_port_PortError;
+                _port = new ComPort(foundPortName, baudRate, parity, dataBits, stopBits);
                 _port.StartCommunications();
             }
             else
